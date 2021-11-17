@@ -1,0 +1,166 @@
+<!-- Copyright (c) 2021 Changkun Ou <hi@changkun.de>. All Rights Reserved.
+Unauthorized using, copying, modifying and distributing, via any
+medium is strictly prohibited. -->
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80889616-2"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'UA-80889616-2');
+        </script>
+        <title>Changkun Ou</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+        <link rel="shortcut icon" type="image/x-icon" href="./logo.png">
+        <meta name="msapplication-TileColor" content="#F7BA2F">
+        <meta name="theme-color" content="#F7BA2F">
+
+        <link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans" rel="stylesheet">
+        <style>
+            html, body {
+                overflow: hidden;
+                margin: 0;
+                background-color: #333;
+            }
+            body {
+                font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', 'LiHei Pro', Arial, sans-serif;
+                color: #333;
+            }
+            #app {
+                position: absolute;
+                width: 320px;
+                text-align: center;
+                top: 50%;
+                left: 50%;
+                margin-left: -160px;
+                margin-top: -160px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                user-select: none;
+            }
+            h1 {
+                color: rgb(0, 145, 230);
+                font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+                font-weight: 300;
+                font-size: 30px;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                margin: 20px 0px 12px;
+                left: 4px;
+            }
+            h2 {
+                color: #999;
+                font-weight: normal;
+                font-size: 15px;
+                letter-spacing: .12em;
+                margin-bottom: 30px;
+                left: 3px;
+            }
+            h1, h2 {
+                position: relative;
+            }
+            p {
+                color: #999;
+                font-size: 14px;
+                line-height: 2em;
+                margin: 0;
+                letter-spacing: 2px;
+            }
+            a {
+                color: #999;
+                text-decoration: none;
+                transition: color .2s ease;
+            }
+            a:hover {
+                color: #0176BA;
+            }
+            img {
+                width: 100px;
+                height: 100px;
+            }
+            #login-error-msg {
+                opacity: 0;
+                color: rgb(177, 67, 79);
+            }
+            #extern {
+                position: absolute;
+                text-align: center;
+                bottom: 1%;
+                width: 900px;
+                left: 50%;
+                margin-left: -450px;
+                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+            }
+            #extern p {
+                display: inline;
+                font-size: 8px;
+                line-height: 2em;
+                margin: 0;
+                letter-spacing: 2px;
+            }
+            #extern div {
+                color: #999;
+                font-size: 8px;
+                line-height: 0.2em;
+                margin: 0;
+                letter-spacing: 2px;
+            }
+            #extern p::after {
+                color: white;
+                content: ' | ';
+            }
+            #extern p:nth-child(5):after {
+                content: '';
+            }
+            #extern p:last-child:after {
+                content: '';
+            }
+            @media (max-width: 450px) {
+                #extern {
+                    position: absolute;
+                    text-align: center;
+                    bottom: 1%;
+                    width: 300px;
+                    left: 50%;
+                    margin-left: -150px;
+                }
+                #extern div {
+                    color: #999;
+                    font-size: 8px;
+                    line-height: 0.2em;
+                    margin: 0;
+                    letter-spacing: 2px;
+                }
+                #extern p {
+                    font-size: 8px;
+                    line-height: 0.2em;
+                    margin: 0;
+                    letter-spacing: 2px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <img src="https://changkun.de/logo.png">
+            <h1>Ou Changkun</h1>
+            <h2>Science and art, life in between.</h2>
+
+            <button id="login">Login</button>
+        </div>
+        <div id="extern">
+          <div>Copyright &copy; 2021</div>
+        </div>
+    </body>
+    <script>
+    const login = document.getElementById("login");
+    login.addEventListener("click", (e) => {
+        const loc = 'http://localhost:8080?redirect=' + window.location.toString()
+        window.location.replace(loc);
+    });
+    </script>
+</html>

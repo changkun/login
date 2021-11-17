@@ -1,0 +1,23 @@
+# Copyright (c) 2021 Changkun Ou <hi@changkun.de>. All Rights Reserved.
+# Unauthorized using, copying, modifying and distributing, via any
+# medium is strictly prohibited.
+
+version: "3"
+services:
+  login:
+    container_name: login
+    restart: always
+    image: login:latest
+    environment:
+      LOGIN_SECRET: changkun
+      LOGIN_PORT: :80
+      LOGIN_DB: /app/db/login.db
+    volumes:
+      - ../db:/app/db
+    deploy:
+      replicas: 1
+    networks:
+      - traefik_proxy
+networks:
+  traefik_proxy:
+    external: true
