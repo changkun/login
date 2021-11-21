@@ -5,6 +5,8 @@
 package login_test
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"changkun.de/x/login"
@@ -12,8 +14,30 @@ import (
 
 func TestLogin(t *testing.T) {
 	t.Skip("Run this test manually by using a valid JWT.")
+
 	err := login.Verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjaGFuZ2t1biIsImV4cCI6MTY0MjUyMDYwMiwianRpIjoiekttd3BWMjljS2thaUFjU0p5OGZnSyIsImlhdCI6MTYzNzMzNjYwMiwiaXNzIjoibG9naW4uY2hhbmdrdW4uZGUiLCJuYmYiOjE2MzczMzY2MDIsInN1YiI6ImxvZ2luIn0.PpRZRph9inNHSGevAJ4G-RSw-rwvjRXMufusBUYtW30")
 	if err != nil {
 		t.Fatalf("expect to be valid, but failed: %v", err)
+	}
+}
+
+func TestLogin2(t *testing.T) {
+	t.Skip("Run this test manually by using valid credentials.")
+
+	req, err := http.NewRequest("GET", "/", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	ah := login.NewAuthHandler(func(w http.ResponseWriter, r *http.Request) (string, string) {
+		return "changkun", "changkun"
+	})
+
+	rr := httptest.NewRecorder()
+	ah.Handle(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("handler returned wrong status code: got %v want %v",
+			status, http.StatusOK)
 	}
 }
