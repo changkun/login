@@ -19,8 +19,8 @@ var (
 	ErrLoginInvalid = errors.New("invalid login")
 )
 
-// Check checks if the given login token is valid or not.
-func Check(token string) error {
+// Verify checks if the given login token is valid or not.
+func Verify(token string) error {
 	b, _ := json.Marshal(struct {
 		Token string `json:"token"`
 	}{

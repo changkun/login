@@ -15,11 +15,44 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sync"
+	"sync/atomic"
 	"time"
 
 	"changkun.de/x/login/internal/uuid"
 	"github.com/golang-jwt/jwt"
 )
+
+var errUnauthorized = errors.New("request unauthorized")
+
+// blocklist holds the ip that should be blocked for further requests.
+//
+// This map may keep grow without releasing memory because of
+// continuously attempts. we also do not persist this type of block info
+// to the disk, which means if we reboot the service then all the blocker
+// are gone and they can attack the server again.
+// We clear the map very month.
+var blocklist sync.Map // map[string]*blockinfo{}
+
+func init() {
+	t := time.NewTicker(time.Hour * 24 * 30)
+	go func() {
+		for range t.C {
+			blocklist.Range(func(k, v interface{}) bool {
+				blocklist.Delete(k)
+				return true
+			})
+		}
+	}()
+}
+
+type blockinfo struct {
+	failCount int64
+	lastFail  atomic.Value // time.Time
+	blockTime atomic.Value // time.Duration
+}
+
+const maxFailureAttempts = 10
 
 // loginForm is a login credentials
 type loginForm struct {
@@ -55,7 +88,11 @@ func authfunc(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		w.WriteHeader(http.StatusBadRequest)
+		if errors.Is(err, errUnauthorized) {
+			w.WriteHeader(http.StatusUnauthorized)
+		} else {
+			w.WriteHeader(http.StatusBadRequest)
+		}
 		log.Println(err)
 	}()
 	if r.Method != http.MethodPost {
@@ -76,10 +113,54 @@ func authfunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// check if the IP failure attempts are too much
+	// if so, direct abort the request without checking credentials
+	ip := readIP(r)
+	if i, ok := blocklist.Load(ip); ok {
+		info := i.(*blockinfo)
+		count := atomic.LoadInt64(&info.failCount)
+		if count > maxFailureAttempts {
+			// if the ip is under block, then directly abort
+			last := info.lastFail.Load().(time.Time)
+			bloc := info.blockTime.Load().(time.Duration)
+
+			if time.Now().UTC().Sub(last.Add(bloc)) < 0 {
+				log.Printf("block ip %v, too much failure attempts. Block time: %v, release until: %v\n",
+					ip, bloc, last.Add(bloc))
+				err = fmt.Errorf("%w: too much failure attempts", errUnauthorized)
+				return
+			}
+
+			// clear the failcount, but increase the next block time
+			atomic.StoreInt64(&info.failCount, 0)
+			info.blockTime.Store(bloc * 2)
+		}
+	}
+
+	defer func() {
+		if !errors.Is(err, errUnauthorized) {
+			return
+		}
+
+		if i, ok := blocklist.Load(ip); !ok {
+			info := &blockinfo{
+				failCount: 1,
+			}
+			info.lastFail.Store(time.Now().UTC())
+			info.blockTime.Store(time.Second * 10)
+
+			blocklist.Store(ip, info)
+		} else {
+			info := i.(*blockinfo)
+			atomic.AddInt64(&info.failCount, 1)
+			info.lastFail.Store(time.Now().UTC())
+		}
+	}()
+
 	// Checking credentials.
 	ok := a.check(lo.Username, lo.Password)
 	if !ok {
-		err = errors.New("incorrect username or password")
+		err = errUnauthorized
 		return
 	}
 
