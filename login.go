@@ -8,6 +8,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 )
@@ -76,7 +77,11 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) (string, error) {
 		token = c.Value
 	}
 
-	return Verify(token)
+	u, err := Verify(token)
+	if err == nil {
+		w.Header().Set("Set-Cookie", fmt.Sprintf("auth=%s; Max-Age=%d", token, 60*60*24*60)) // 3 months
+	}
+	return u, err
 }
 
 // RequestToken requests the login endpoint and returns the token for login.
