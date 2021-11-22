@@ -22,19 +22,20 @@ func TestLogin(t *testing.T) {
 }
 
 func TestLogin2(t *testing.T) {
-	t.Skip("Run this test manually by using valid credentials.")
+	t.Skip("Run this test manually by using a valid credentials.")
 
-	req, err := http.NewRequest("GET", "/", nil)
+	token, err := login.RequestToken("changkun", "changkun")
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	ah := login.NewAuthHandler(func(w http.ResponseWriter, r *http.Request) (string, string) {
-		return "changkun", "changkun"
-	})
+	req, err := http.NewRequest("GET", "/"+"?token="+token, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	rr := httptest.NewRecorder()
-	ah.Handle(rr, req)
+	login.HandleAuth(rr, req)
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
