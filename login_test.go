@@ -15,7 +15,7 @@ import (
 func TestLogin(t *testing.T) {
 	t.Skip("Run this test manually by using a valid JWT.")
 
-	err := login.Verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjaGFuZ2t1biIsImV4cCI6MTY0MjUyMDYwMiwianRpIjoiekttd3BWMjljS2thaUFjU0p5OGZnSyIsImlhdCI6MTYzNzMzNjYwMiwiaXNzIjoibG9naW4uY2hhbmdrdW4uZGUiLCJuYmYiOjE2MzczMzY2MDIsInN1YiI6ImxvZ2luIn0.PpRZRph9inNHSGevAJ4G-RSw-rwvjRXMufusBUYtW30")
+	_, err := login.Verify("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJjaGFuZ2t1biIsImV4cCI6MTY0MjUyMDYwMiwianRpIjoiekttd3BWMjljS2thaUFjU0p5OGZnSyIsImlhdCI6MTYzNzMzNjYwMiwiaXNzIjoibG9naW4uY2hhbmdrdW4uZGUiLCJuYmYiOjE2MzczMzY2MDIsInN1YiI6ImxvZ2luIn0.PpRZRph9inNHSGevAJ4G-RSw-rwvjRXMufusBUYtW30")
 	if err != nil {
 		t.Fatalf("expect to be valid, but failed: %v", err)
 	}
@@ -35,7 +35,13 @@ func TestLogin2(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	login.HandleAuth(rr, req)
+	u, err := login.HandleAuth(rr, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if u != "changkun" {
+		t.Fatalf("user is not changkun!")
+	}
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",

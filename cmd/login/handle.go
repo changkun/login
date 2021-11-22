@@ -282,6 +282,10 @@ func verifyfunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Everything is OK!
+	b, _ = json.Marshal(struct {
+		Username string `json:"username"`
+	}{Username: claims.Audience})
+	w.Write(b)
 }
 
 func homefunc(w http.ResponseWriter, r *http.Request) {
