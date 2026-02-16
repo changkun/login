@@ -2,7 +2,6 @@
 # Unauthorized using, copying, modifying and distributing, via any
 # medium is strictly prohibited.
 
-version: "3"
 services:
   login:
     container_name: login
