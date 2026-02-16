@@ -3,7 +3,7 @@ Unauthorized using, copying, modifying and distributing, via any
 medium is strictly prohibited. -->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-80889616-2"></script>
         <script>
@@ -12,192 +12,297 @@ medium is strictly prohibited. -->
           gtag('js', new Date());
           gtag('config', 'UA-80889616-2');
         </script>
-        <title>Changkun Ou</title>
+        <title>Login - Changkun Ou</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-        <link rel="shortcut icon" type="image/x-icon" href="./logo.png">
-        <meta name="msapplication-TileColor" content="#F7BA2F">
-        <meta name="theme-color" content="#F7BA2F">
-
-        <link href="https://fonts.googleapis.com/css?family=Lato|Open+Sans" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="shortcut icon" type="image/x-icon" href="https://changkun.de/logo.png">
+        <meta name="color-scheme" content="light dark">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
         <style>
-            html, body {
-                overflow: hidden;
-                margin: 0;
-                background-color: #333;
+            :root {
+                --bg: #e8e8e8;
+                --text: #1a1a1a;
+                --text-secondary: #444444;
+                --text-muted: #777777;
+                --accent: #0055aa;
+                --border: #cccccc;
+                --input-bg: #ffffff;
+            }
+            [data-theme="dark"] {
+                --bg: #111111;
+                --text: #f5f5f5;
+                --text-secondary: #a0a0a0;
+                --text-muted: #666666;
+                --accent: #4da6ff;
+                --border: #333333;
+                --input-bg: #1a1a1a;
+            }
+            * {
+                box-sizing: border-box;
+            }
+            ::selection {
+                background: #555;
+                color: #fff;
+            }
+            html {
+                height: 100%;
             }
             body {
-                font-family: 'Open Sans', 'Helvetica Neue', 'Hiragino Sans GB', 'LiHei Pro', Arial, sans-serif;
-                color: #333;
+                margin: 0;
+                min-height: 100%;
+                display: flex;
+                flex-direction: column;
+                background: var(--bg);
+                color: var(--text);
+                font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                line-height: 1.6;
+                transition: background 0.3s, color 0.3s;
             }
-            #app {
-                position: absolute;
-                width: 320px;
+            .theme-toggle {
+                position: fixed;
+                top: 24px;
+                right: 24px;
+                background: none;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                padding: 8px;
+                cursor: pointer;
+                color: var(--text-secondary);
+                transition: color 0.2s, border-color 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .theme-toggle:hover {
+                color: var(--text);
+                border-color: var(--text-muted);
+            }
+            [data-theme="light"] .icon-sun,
+            [data-theme="dark"] .icon-moon {
+                display: none;
+            }
+            [data-theme="light"] .icon-moon,
+            [data-theme="dark"] .icon-sun {
+                display: block;
+            }
+            main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 24px;
+            }
+            .login-card {
+                width: 100%;
+                max-width: 360px;
                 text-align: center;
-                top: 50%;
-                left: 50%;
-                margin-left: -160px;
-                margin-top: -160px;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                user-select: none;
+            }
+            .login-card img {
+                width: 80px;
+                height: 80px;
+                border-radius: 12px;
+                margin-bottom: 24px;
             }
             h1 {
-                color: rgb(0, 145, 230);
-                font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
-                font-weight: 300;
-                font-size: 30px;
-                letter-spacing: 3px;
+                margin: 0 0 4px;
+                font-size: 28px;
+                font-weight: 600;
+                letter-spacing: 2px;
                 text-transform: uppercase;
-                margin: 20px 0px 12px;
-                left: 4px;
             }
-            h2 {
-                color: #999;
-                font-weight: normal;
+            .tagline {
+                margin: 0 0 32px;
                 font-size: 15px;
-                letter-spacing: .12em;
-                margin-bottom: 30px;
-                left: 3px;
+                font-weight: 300;
+                font-style: italic;
+                color: var(--text-muted);
             }
-            h1, h2 {
-                position: relative;
+            .login-title {
+                margin: 0 0 24px;
+                font-size: 15px;
+                font-weight: 500;
+                color: var(--accent);
             }
-            p {
-                color: #999;
+            form {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            input[type="text"],
+            input[type="password"] {
+                width: 100%;
+                padding: 10px 14px;
+                font-family: inherit;
                 font-size: 14px;
-                line-height: 2em;
-                margin: 0;
-                letter-spacing: 2px;
+                font-weight: 400;
+                color: var(--text);
+                background: var(--input-bg);
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                outline: none;
+                transition: border-color 0.2s;
             }
-            a {
-                color: #999;
-                text-decoration: none;
-                transition: color .2s ease;
+            input[type="text"]:focus,
+            input[type="password"]:focus {
+                border-color: var(--accent);
             }
-            a:hover {
-                color: #0176BA;
+            input[type="text"]::placeholder,
+            input[type="password"]::placeholder {
+                color: var(--text-muted);
             }
-            img {
-                width: 100px;
-                height: 100px;
+            input[type="submit"] {
+                width: 100%;
+                padding: 10px 14px;
+                font-family: inherit;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--bg);
+                background: var(--accent);
+                border: none;
+                border-radius: 8px;
+                cursor: pointer;
+                transition: opacity 0.2s;
+                margin-top: 4px;
             }
-            #login-error-msg {
+            input[type="submit"]:hover {
+                opacity: 0.85;
+            }
+            .error-msg {
+                margin-top: 16px;
+                font-size: 13px;
+                color: #c0392b;
                 opacity: 0;
-                color: rgb(177, 67, 79);
+                transition: opacity 0.2s;
             }
-            #extern {
-                position: absolute;
+            footer {
+                padding: 24px;
                 text-align: center;
-                bottom: 1%;
-                width: 900px;
-                left: 50%;
-                margin-left: -450px;
-                font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+                font-size: 13px;
+                color: var(--text-muted);
             }
-            #extern p {
-                display: inline;
-                font-size: 8px;
-                line-height: 2em;
-                margin: 0;
-                letter-spacing: 2px;
+            footer a {
+                color: var(--text-muted);
+                text-decoration: none;
+                transition: color 0.2s;
             }
-            #extern div {
-                color: #999;
-                font-size: 8px;
-                line-height: 0.2em;
-                margin: 0;
-                letter-spacing: 2px;
+            footer a:hover {
+                color: var(--text-secondary);
             }
-            #extern p::after {
-                color: white;
-                content: ' | ';
-            }
-            #extern p:nth-child(5):after {
-                content: '';
-            }
-            #extern p:last-child:after {
-                content: '';
-            }
-            @media (max-width: 450px) {
-                #extern {
-                    position: absolute;
-                    text-align: center;
-                    bottom: 1%;
-                    width: 300px;
-                    left: 50%;
-                    margin-left: -150px;
+            @media (max-width: 600px) {
+                main {
+                    padding: 60px 24px;
                 }
-                #extern div {
-                    color: #999;
-                    font-size: 8px;
-                    line-height: 0.2em;
-                    margin: 0;
-                    letter-spacing: 2px;
+                .login-card {
+                    max-width: 100%;
                 }
-                #extern p {
-                    font-size: 8px;
-                    line-height: 0.2em;
-                    margin: 0;
-                    letter-spacing: 2px;
+                .theme-toggle {
+                    top: 16px;
+                    right: 16px;
                 }
             }
         </style>
     </head>
     <body>
-        <div id="app">
-            <img src="https://changkun.de/logo.png">
-            <h1>Ou Changkun</h1>
-            <h2>Science and art, life in between.</h2>
+        <button class="theme-toggle" aria-label="Toggle theme">
+            <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
 
-            <h3 id="login-header">Login</h3>
-
-            <div id="login-error-msg-holder">
+        <main>
+            <div class="login-card">
+                <img src="https://changkun.de/logo.png" alt="Changkun Ou">
+                <h1>Changkun Ou</h1>
+                <p class="tagline">Science and art, life in between.</p>
+                <p class="login-title">Login</p>
+                <form id="login">
+                    <input type="text" name="username" id="username" placeholder="Username" autocomplete="username">
+                    <input type="password" name="password" id="password-field" placeholder="Password" autocomplete="current-password">
+                    <input type="submit" value="Login" id="submit">
+                </form>
+                <p class="error-msg" id="login-error-msg">Invalid username and/or password</p>
             </div>
+        </main>
 
-            <form id="login">
-                <p><input type="text" name="username" id="username" placeholder="Username"></p>
-                <p><input type="password" name="password" id="password-field" placeholder="Password"></p>
-                <p><input type="submit" value="Login" id="submit"></p>
-            </form>
-            <p id="login-error-msg">Invalid username <span id="error-msg-second-line">and/or password</span></p>
-        </div>
-        <div id="extern">
-          <div>Copyright &copy; 2021</div>
-        </div>
-    </body>
-    <script>
-        const loginForm = document.getElementById("login");
-        const loginButton = document.getElementById("submit");
-        const loginErrorMsg = document.getElementById("login-error-msg");
-        const params = new URLSearchParams(window.location.search)
-        loginButton.addEventListener("click", (e) => {
-            e.preventDefault();
+        <footer>
+            <span>&copy; 2021–<script>document.write(new Date().getFullYear())</script> Changkun Ou</span>
+        </footer>
 
-            fetch('/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: loginForm.username.value,
-                    password: loginForm.password.value,
-                    redirect: params.get('redirect'),
-                }),
-            })
-            .then(resp => {
-                if (resp.status >= 400 && resp.status < 600) {
-                    throw new Error('bad response from server')
+        <script>
+            (function() {
+                const toggle = document.querySelector('.theme-toggle');
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+
+                function getTheme() {
+                    const stored = localStorage.getItem('theme');
+                    if (stored) return stored;
+                    return prefersDark.matches ? 'dark' : 'light';
                 }
-                return resp.json()
-            })
-            .then(data => {
-                window.location.href = data.redirect
-            })
-            .catch(err => {
-                loginErrorMsg.style.opacity = 1;
-                console.log(err)
+
+                function setTheme(theme) {
+                    document.documentElement.setAttribute('data-theme', theme);
+                    localStorage.setItem('theme', theme);
+                }
+
+                setTheme(getTheme());
+
+                toggle.addEventListener('click', () => {
+                    const current = document.documentElement.getAttribute('data-theme');
+                    setTheme(current === 'dark' ? 'light' : 'dark');
+                });
+
+                prefersDark.addEventListener('change', (e) => {
+                    if (!localStorage.getItem('theme')) {
+                        setTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
+            })();
+
+            const loginForm = document.getElementById("login");
+            const loginErrorMsg = document.getElementById("login-error-msg");
+            const params = new URLSearchParams(window.location.search);
+
+            document.getElementById("submit").addEventListener("click", (e) => {
+                e.preventDefault();
+                loginErrorMsg.style.opacity = 0;
+
+                fetch('/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        username: loginForm.username.value,
+                        password: loginForm.password.value,
+                        redirect: params.get('redirect'),
+                    }),
+                })
+                .then(resp => {
+                    if (resp.status >= 400 && resp.status < 600) {
+                        throw new Error('bad response from server');
+                    }
+                    return resp.json();
+                })
+                .then(data => {
+                    window.location.href = data.redirect;
+                })
+                .catch(err => {
+                    loginErrorMsg.style.opacity = 1;
+                    console.log(err);
+                });
             });
-        });
-    </script>
+        </script>
+    </body>
 </html>
