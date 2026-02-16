@@ -280,7 +280,10 @@ medium is strictly prohibited. -->
             function showLoggedIn(username) {
                 statusEl.className = 'status logged-in';
                 statusEl.innerHTML = 'Logged in as <span class="username">' + username + '</span>';
-                actionsEl.innerHTML = '<button class="btn btn-secondary" id="login-btn">Login again</button>';
+                actionsEl.innerHTML =
+                    '<button class="btn btn-secondary" id="logout-btn">Logout</button>' +
+                    '<button class="btn btn-secondary" id="login-btn">Login again</button>';
+                document.getElementById('logout-btn').addEventListener('click', logout);
                 document.getElementById('login-btn').addEventListener('click', redirectToLogin);
             }
 
@@ -289,6 +292,14 @@ medium is strictly prohibited. -->
                 statusEl.textContent = 'Not logged in';
                 actionsEl.innerHTML = '<button class="btn" id="login-btn">Login</button>';
                 document.getElementById('login-btn').addEventListener('click', redirectToLogin);
+            }
+
+            function logout() {
+                document.cookie = 'auth=; Domain=changkun.de; Path=/; Max-Age=0';
+                // Also clear for the exact host (in case of localhost testing).
+                document.cookie = 'auth=; Path=/; Max-Age=0';
+                // Remove token from URL and refresh.
+                window.location.replace(window.location.origin + '/test');
             }
 
             function redirectToLogin() {
