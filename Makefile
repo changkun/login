@@ -9,8 +9,6 @@ all:
 	go build $(BUILD_FLAGS) cmd/login/*.go
 run:
 	./$(NAME)
-initdb:
-	cd db && go run initdb.go
 build:
 	CGO_ENABLED=0 GOOS=linux go build $(BUILD_FLAGS) cmd/login/*.go
 	docker build -f docker/Dockerfile -t $(NAME):latest .

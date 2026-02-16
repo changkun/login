@@ -158,7 +158,7 @@ func authfunc(w http.ResponseWriter, r *http.Request) {
 	}()
 
 	// Checking credentials.
-	ok := a.check(lo.Username, lo.Password)
+	ok := check(lo.Username, lo.Password)
 	if !ok {
 		err = errUnauthorized
 		return
@@ -276,7 +276,7 @@ func verifyfunc(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if !a.checkUser(claims.Audience) {
+	if !checkUser(claims.Audience) {
 		err = fmt.Errorf("invalid username: %s", claims.Audience)
 		return
 	}
@@ -313,7 +313,7 @@ func homefunc(w http.ResponseWriter, r *http.Request) {
 		if err == nil {
 			// Checking validity of the token.
 			claims, ok := t.Claims.(*jwt.StandardClaims)
-			if ok && t.Valid && a.checkUser(claims.Audience) {
+			if ok && t.Valid && checkUser(claims.Audience) {
 				uu, err := url.Parse(redirAddr)
 				if err == nil {
 					q := uu.Query()
