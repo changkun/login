@@ -98,9 +98,18 @@ func RequestToken(user, pass string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	cookies := resp.Cookies()
-	if resp.StatusCode != http.StatusOK || len(cookies) == 0 {
+	if resp.StatusCode != http.StatusOK {
 		return "", ErrUnauthorized
 	}
-	return cookies[0].Value, nil
+
+	var result struct {
+		Token string `json:"token"`
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		return "", ErrBadRequest
+	}
+	if result.Token == "" {
+		return "", ErrUnauthorized
+	}
+	return result.Token, nil
 }
