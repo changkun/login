@@ -19,6 +19,7 @@ func main() {
 	http.Handle("/auth", logging(http.HandlerFunc(authfunc)))
 	http.Handle("/verify", logging(http.HandlerFunc(verifyfunc)))
 	http.Handle("/test", logging(http.HandlerFunc(testfunc)))
+	http.Handle("/sdk.js", logging(http.HandlerFunc(sdkfunc)))
 
 	port := os.Getenv("LOGIN_PORT")
 	if port == "" {

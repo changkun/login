@@ -79,7 +79,7 @@ func HandleAuth(w http.ResponseWriter, r *http.Request) (string, error) {
 
 	u, err := Verify(token)
 	if err == nil {
-		w.Header().Set("Set-Cookie", fmt.Sprintf("auth=%s; Max-Age=%d", token, 60*60*24*60)) // 3 months
+		w.Header().Set("Set-Cookie", fmt.Sprintf("auth=%s; Domain=changkun.de; Path=/; Max-Age=%d; SameSite=Lax", token, 60*60*24*60)) // 3 months
 	}
 	return u, err
 }

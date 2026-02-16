@@ -330,6 +330,13 @@ func homefunc(w http.ResponseWriter, r *http.Request) {
 }
 func testfunc(w http.ResponseWriter, r *http.Request) { testTmpl.Execute(w, nil) }
 
+func sdkfunc(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/javascript; charset=utf-8")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Cache-Control", "public, max-age=3600")
+	w.Write([]byte(sdkFile))
+}
+
 var (
 	//go:embed login.html
 	loginFile string
@@ -338,4 +345,7 @@ var (
 	//go:embed test.html
 	testFile string
 	testTmpl = template.Must(template.New("test").Parse(testFile))
+
+	//go:embed sdk.js
+	sdkFile string
 )
