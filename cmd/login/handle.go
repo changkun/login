@@ -195,7 +195,7 @@ func authfunc(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Set the cookie if possible.
-	w.Header().Set("Set-Cookie", fmt.Sprintf("auth=%s; Max-Age=%d", token, 60*60*24*60)) // 3 months
+	w.Header().Set("Set-Cookie", fmt.Sprintf("auth=%s; Domain=changkun.de; Path=/; Max-Age=%d; SameSite=Lax", token, 60*60*24*60)) // 3 months
 
 	// And supply the token to the redirected location, so that we could
 	// handle CORS cases if the auth is from a different domain.
